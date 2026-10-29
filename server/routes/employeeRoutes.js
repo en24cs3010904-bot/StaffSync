@@ -1,0 +1,11 @@
+const r = require("express").Router();
+const c = require("../controllers/employeeController");
+const { protect, authorize } = require("../middleware/authMiddleware");
+r.use(protect);
+r.get("/me", c.getMyProfile);
+r.put("/me", c.updateMyProfile);
+r.get("/", authorize("hr", "manager"), c.getEmployees);
+r.post("/", authorize("hr"), c.addEmployee);
+r.put("/:id", authorize("hr"), c.updateEmployee);
+r.delete("/:id", authorize("hr"), c.deleteEmployee);
+module.exports = r;
